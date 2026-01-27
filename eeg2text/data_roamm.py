@@ -33,6 +33,7 @@ class ROAMMEEG2TextDataset(Dataset):
         sentence_col: str = "sentence",
         fix_key_col: str = "fix_R_fixed_word_key",
         data_type: str = "all",
+        subject_choice: str = "all",
     ):
         assert split in {"train", "dev", "test"}, "split must be one of: train, dev, test"
         self.csv_path = csv_path
@@ -43,24 +44,10 @@ class ROAMMEEG2TextDataset(Dataset):
         self.sentence_id_col = sentence_id_col
         self.sentence_col = sentence_col
         self.fix_key_col = fix_key_col
+        self.subject_choice = subject_choice
 
+        # Load CSV
         df = pd.read_csv(csv_path)
-
-        # Filter by reading state
-        # data_type:
-        #   - "all": keep all
-        #   - "nr":  keep only normal reading (is_mw == 0)
-        #   - "mw":  keep only mind-wandering (is_mw != 0)
-        assert data_type in {"all", "nr", "mw"}, f"Invalid data_type={data_type}"
-
-        if data_type != "all":
-            if "is_mw" not in df.columns:
-                raise ValueError("Column 'is_mw' not found in CSV but data_type != 'all' was requested.")
-            if data_type == "nr":
-                df = df[df["is_mw"] == 0].reset_index(drop=True)
-            elif data_type == "mw":
-                df = df[df["is_mw"] != 0].reset_index(drop=True)
-
         # Identify EEG feature columns: numeric columns excluding obvious metadata/labels.
         meta_cols = {
             sentence_id_col, sentence_col, fix_key_col,
@@ -71,6 +58,22 @@ class ROAMMEEG2TextDataset(Dataset):
         if len(eeg_cols) == 0:
             raise ValueError("No numeric EEG feature columns found after excluding metadata columns.")
         self.eeg_cols = eeg_cols
+
+        # Filter by reading state
+        # data_type:
+        #   - "all": keep all
+        #   - "nr":  keep only normal reading (is_mw == 0)
+        #   - "mw":  keep only mind-wandering (is_mw != 0)
+        assert data_type in {"all", "nr", "mw"}, f"Invalid data_type={data_type}"
+        if data_type != "all":
+            if "is_mw" not in df.columns:
+                raise ValueError("Column 'is_mw' not found in CSV but data_type != 'all' was requested.")
+            if data_type == "nr":
+                df = df[~df["is_mw"]].reset_index(drop=True)
+            elif data_type == "mw":
+                df = df[df["is_mw"]].reset_index(drop=True)
+        else:
+            df = df.groupby([sentence_id_col, sentence_col, fix_key_col, "fix_R_fixed_word"], as_index=False)[eeg_cols].mean()
 
         # Drop whole sentences containing any NaN in EEG features or missing sentence text
         # if drop_nan_sentences:
@@ -98,7 +101,10 @@ class ROAMMEEG2TextDataset(Dataset):
 
         split_ids = {"train": train_ids, "dev": dev_ids, "test": test_ids}[split]
         self.df = df[df[sentence_col].isin(split_ids)].reset_index(drop=True)
-
+        # print the sample size
+        print(f"[INFO]{split} set size (# sentences): ", len(split_ids))
+        print(f"[INFO]{split} # samples: ", len(self.df))
+        
         # Store grouped sentence views for indexing
         self.sent_groups = list(self.df.groupby(sentence_col, sort=False))
 

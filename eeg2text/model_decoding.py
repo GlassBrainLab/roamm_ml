@@ -26,7 +26,7 @@ class BrainTranslator(nn.Module):
         self.fc1 = nn.Linear(in_feature, decoder_embedding_size)
 
     def addin_forward(self, input_embeddings_batch, input_masks_invert):
-        """input_embeddings_batch: batch_size*Seq_len*840"""
+        """input_embeddings_batch: batch_size*Seq_len*512"""
         """input_mask: 1 is not masked, 0 is masked"""
         """input_masks_invert: 1 is masked, 0 is not masked"""
 
@@ -84,7 +84,7 @@ class BrainTranslator(nn.Module):
 
 
 class BrainTranslatorNaive(nn.Module):
-    def __init__(self, pretrained_layers, in_feature=840, decoder_embedding_size=1024, additional_encoder_nhead=8,
+    def __init__(self, pretrained_layers, in_feature=512, decoder_embedding_size=1024, additional_encoder_nhead=8,
                  additional_encoder_dim_feedforward=2048):
         super(BrainTranslatorNaive, self).__init__()
         '''no additional transformer encoder version'''
@@ -92,7 +92,7 @@ class BrainTranslatorNaive(nn.Module):
         self.fc1 = nn.Linear(in_feature, decoder_embedding_size)
 
     def forward(self, input_embeddings_batch, input_masks_batch, input_masks_invert, target_ids_batch_converted):
-        """input_embeddings_batch: batch_size*Seq_len*840"""
+        """input_embeddings_batch: batch_size*Seq_len*512"""
         """input_mask: 1 is not masked, 0 is masked"""
         """input_masks_invert: 1 is masked, 0 is not masked"""
         encoded_embedding = F.relu(self.fc1(input_embeddings_batch))
@@ -147,7 +147,7 @@ class PositionalEncoding(nn.Module):
 
 
 class BrainTranslatorBert(nn.Module):
-    def __init__(self, pretrained_layers, in_feature=840, hidden_size=768):
+    def __init__(self, pretrained_layers, in_feature=512, hidden_size=768):
         super(BrainTranslatorBert, self).__init__()
 
         self.pretrained_Bert = pretrained_layers
@@ -161,7 +161,7 @@ class BrainTranslatorBert(nn.Module):
 
 
 class EEG2BertMapping(nn.Module):
-    def __init__(self, in_feature=840, hidden_size=512, out_feature=768):
+    def __init__(self, in_feature=512, hidden_size=512, out_feature=768):
         super(EEG2BertMapping, self).__init__()
         self.fc1 = nn.Linear(in_feature, hidden_size)
         self.fc2 = nn.Linear(hidden_size, out_feature)
@@ -173,7 +173,7 @@ class EEG2BertMapping(nn.Module):
 
 
 class ContrastiveBrainTextEncoder(nn.Module):
-    def __init__(self, pretrained_text_encoder, in_feature=840, eeg_encoder_nhead=8, eeg_encoder_dim_feedforward=2048,
+    def __init__(self, pretrained_text_encoder, in_feature=512, eeg_encoder_nhead=8, eeg_encoder_dim_feedforward=2048,
                  embed_dim=768):
         super(ContrastiveBrainTextEncoder, self).__init__()
         # EEG Encoder

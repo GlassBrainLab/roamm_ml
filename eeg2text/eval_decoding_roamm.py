@@ -178,7 +178,7 @@ if __name__ == '__main__':
     print(f'[INFO]using device {dev}')
 
     ''' set up dataloader (ROAMM CSV) '''
-    csv_path = args.get('csv_path', '/gpfs1/pi/djangraw/mindless_reading/data/all_subjects_eeg2text_data.csv')
+    csv_path = args.get('csv_path', '/gpfs1/pi/djangraw/mindless_reading/data/all_subjects_eeg2text_data_weightedavg.csv')
     max_seq_len = args.get('max_seq_len', 64)
     max_target_len = args.get('max_target_len', 64)
     print(f'[INFO]CSV path: {csv_path}')
