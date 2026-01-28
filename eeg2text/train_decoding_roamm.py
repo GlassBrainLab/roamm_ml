@@ -209,7 +209,7 @@ if __name__ == '__main__':
 
     ''' set up dataloader (ROAMM CSV) '''
     # Point this to your CSV on VACC/GPU node when running on HPC
-    csv_path = args.get('csv_path', '/gpfs1/pi/djangraw/mindless_reading/data/all_subjects_eeg2text_data_weightedavg.csv')
+    csv_path = args.get('csv_path', '/gpfs1/pi/anon/mindless_reading/data/all_subjects_eeg2text_data_weightedavg.csv')
 
     # NOTE: dataset split is by unique sentences (80/10/10) inside the Dataset
     max_seq_len = args.get('max_seq_len', 64)          # number of fixation-events (tokens) per sample
