@@ -1,0 +1,59 @@
+2026-02-09 20:47:20.031572: I tensorflow/core/platform/cpu_feature_guard.cc:210] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
+To enable the following instructions: AVX2 FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
+Using device: cuda
+Final dataset shape: (5604, 64, 400) (5604,)
+DatasetDict({
+    train: Dataset({
+        features: ['data', 'labels'],
+        num_rows: 4483
+    })
+    val: Dataset({
+        features: ['data', 'labels'],
+        num_rows: 560
+    })
+    test: Dataset({
+        features: ['data', 'labels'],
+        num_rows: 561
+    })
+})
+flash_attn not found, install it with `pip install flash_attn` if you want to use it
+
+Epoch 1/20
+Training:   0%|          | 0/71 [00:00<?, ?it/s]Training:   0%|          | 0/71 [00:00<?, ?it/s]
+Traceback (most recent call last):
+  File "/gpfs1/pi/djangraw/hsun11/roamm_ml/eegfm/train_reve_roamm.py", line 233, in <module>
+    train_one_epoch(model, train_loader)
+  File "/gpfs1/pi/djangraw/hsun11/roamm_ml/eegfm/train_reve_roamm.py", line 184, in train_one_epoch
+    out = model(x, pos)
+          ^^^^^^^^^^^^^
+  File "/gpfs1/pi/djangraw/hsun11/miniconda3/envs/roamm/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1773, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/gpfs1/pi/djangraw/hsun11/miniconda3/envs/roamm/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1784, in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/users/h/s/hsun11/.cache/huggingface/modules/transformers_modules/brain_hyphen_bzh/reve_hyphen_large/97c29e287f5557cccbf1a87773b422865d90f6e4/modeling_reve.py", line 361, in forward
+    x = self.final_layer(x)
+        ^^^^^^^^^^^^^^^^^^^
+  File "/gpfs1/pi/djangraw/hsun11/miniconda3/envs/roamm/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1773, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/gpfs1/pi/djangraw/hsun11/miniconda3/envs/roamm/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1784, in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/gpfs1/pi/djangraw/hsun11/miniconda3/envs/roamm/lib/python3.12/site-packages/torch/nn/modules/container.py", line 244, in forward
+    input = module(input)
+            ^^^^^^^^^^^^^
+  File "/gpfs1/pi/djangraw/hsun11/miniconda3/envs/roamm/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1773, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/gpfs1/pi/djangraw/hsun11/miniconda3/envs/roamm/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1784, in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/gpfs1/pi/djangraw/hsun11/miniconda3/envs/roamm/lib/python3.12/site-packages/torch/nn/modules/normalization.py", line 402, in forward
+    return F.rms_norm(x, self.normalized_shape, self.weight, self.eps)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/gpfs1/pi/djangraw/hsun11/miniconda3/envs/roamm/lib/python3.12/site-packages/torch/nn/functional.py", line 2924, in rms_norm
+    return torch.rms_norm(input, normalized_shape, weight, eps)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: Given normalized_shape=[160000], expected input with shape [*, 160000], but got input of size[64, 155648]
