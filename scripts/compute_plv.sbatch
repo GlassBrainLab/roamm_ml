@@ -1,0 +1,18 @@
+#!/bin/bash
+
+#SBATCH --partition=general
+#SBATCH --nodes=1
+#SBATCH --ntasks=1
+#SBATCH --mem=80G
+#SBATCH --time=12:00:00
+#SBATCH --job-name=compute_plv
+#SBATCH --output=%x_%j.out
+#SBATCH --mail-type=START,END,FAIL
+
+source ~/.bashrc
+conda activate roamm
+
+cd /gpfs1/pi/djangraw/hsun11/roamm_ml/scripts
+
+python3 compute_plv.py
+

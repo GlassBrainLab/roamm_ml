@@ -22,11 +22,11 @@ from tqdm.auto import tqdm
 # ==========================
 data_root = "/gpfs1/pi/djangraw/mindless_reading/data"
 sfreq = 200
-window_seconds = 2
+window_seconds = 5
 window_size = int(sfreq * window_seconds)
 
-# model_size = "base"
-model_size = "large"
+model_size = "base"
+# model_size = "large"
 if model_size == "base":
     hidden_dim = 512
 elif model_size == "large":
@@ -77,7 +77,7 @@ for subject_id in all_subjects:
         chan_list = ["AFz" if ch == "Afz" else ch for ch in chan_list]
 
     data_file = os.path.join(subject_dir, f"{subject_id}_{window_size}windowed_eeg_data.npy")
-    labels_file = os.path.join(subject_dir, f"{subject_id}_{256 * window_seconds}windowed_labels.npy")
+    labels_file = os.path.join(subject_dir, f"{subject_id}_{256 * window_seconds}windowed_labels_imbalanced.npy")
 
     if not (os.path.exists(data_file) and os.path.exists(labels_file)):
         continue
