@@ -1,4 +1,4 @@
-# ROAMM_ML
+# ROAMM
 
 Machine learning code accompanying **ROAMM (Reading Observed At Mindless Moments)** — a large-scale, multimodal dataset of simultaneous EEG and eye-tracking recorded during naturalistic reading, with word-level mind-wandering (MW) annotations.
 
